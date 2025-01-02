@@ -12,6 +12,7 @@ import 'vue-awesome/icons/chart-area.js';
 import 'vue-awesome/icons/chart-pie.js';
 import 'vue-awesome/icons/chart-line.js';
 import 'vue-awesome/icons/align-left.js';
+import $http from '@/api/index.js'
 
 //引入echart
 //4.x 引用方式
@@ -21,6 +22,7 @@ import echarts from 'echarts'
 //import * as echarts from 'echarts'
 Vue.prototype.$echarts = echarts
 Vue.config.productionTip = false;
+Vue.prototype.$http = $http;
 
 // 全局注册
 Vue.component('icon', Icon);

@@ -10,6 +10,7 @@
   "dependencies": {
     "@jiaminghi/data-view": "^2.7.3",
     "@types/echarts": "^4.4.3",
+    "axios": "^1.7.9",
     "core-js": "^3.6.4",
     "echarts": "^4.6.0",
     "vue": "^2.6.11",
@@ -20,7 +21,7 @@
   "devDependencies": {
     "@vue/cli-plugin-babel": "^4.2.0",
     "@vue/cli-plugin-eslint": "^4.2.0",
-    "@vue/cli-service": "^5.0.8",
+    "@vue/cli-service": "^4.5.0",
     "babel-eslint": "^10.0.3",
     "eslint": "^6.7.2",
     "eslint-plugin-vue": "^6.1.2",
