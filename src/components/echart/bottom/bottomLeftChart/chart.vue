@@ -55,7 +55,7 @@ export default {
             y: "4%"
           },
           xAxis: {
-            data: newData.category,
+            data: this.cdata.category,
             axisLine: {
               lineStyle: {
                 color: "#B4B4B4"
@@ -104,7 +104,7 @@ export default {
                   color: "#F02FC2"
                 }
               },
-              data: newData.rateData
+              data: this.cdata.rateData
             },
             {
               name: "已贯通",
@@ -119,7 +119,7 @@ export default {
                   ])
                 }
               },
-              data: newData.barData
+              data: this.cdata.barData
             },
             {
               name: "计划贯通",
@@ -137,7 +137,7 @@ export default {
                 }
               },
               z: -12,
-              data: newData.lineData
+              data: this.cdata.lineData
             }
           ]
         }

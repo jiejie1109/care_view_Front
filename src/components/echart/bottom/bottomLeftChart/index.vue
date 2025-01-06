@@ -1,13 +1,14 @@
 <template>
   <div>
-    <Chart :cdata="cdata" />
+    <!-- <Chart :cdata="cdata" /> -->
+    <div ref="chart" style="width: 100%;height: 480px;"></div>
   </div>
 </template>
 
 <script>
-import Chart from './chart.vue'
+// import Chart from './chart.vue'
 export default {
-  data () {
+  data() {
     return {
       cdata: {
         category: [
@@ -120,22 +121,130 @@ export default {
     };
   },
   components: {
-    Chart,
+    // Chart,
   },
-  mounted () {
-    this.setData();
+  mounted() {
+    // this.setData();
+    this.initChart()
   },
   methods: {
-    // 根据自己的业务情况修改
-    setData () {
-      for (let i = 0; i < this.cdata.barData.length -1; i++) {
-        let rate = this.cdata.barData[i] / this.cdata.lineData[i];
-        this.cdata.rateData.push(rate.toFixed(2));
+    initChart() {
+      this.myChart = this.$echarts.init(this.$refs.chart);
+      const option = {
+        tooltip: {
+          trigger: "axis",
+          backgroundColor: "rgba(255,255,255,0.1)",
+          axisPointer: {
+            type: "shadow",
+            label: {
+              show: true,
+              backgroundColor: "#7B7DDC"
+            }
+          }
+        },
+        legend: {
+          data: ["已贯通", "计划贯通", "贯通率"],
+          textStyle: {
+            color: "#B4B4B4"
+          },
+          top: "0%"
+        },
+        grid: {
+          x: "8%",
+          width: "88%",
+          y: "4%"
+        },
+        xAxis: {
+          data: this.cdata.category,
+          axisLine: {
+            lineStyle: {
+              color: "#B4B4B4"
+            }
+          },
+          axisTick: {
+            show: false
+          }
+        },
+        yAxis: [
+          {
+            splitLine: { show: false },
+            axisLine: {
+              lineStyle: {
+                color: "#B4B4B4"
+              }
+            },
+
+            axisLabel: {
+              formatter: "{value} "
+            }
+          },
+          {
+            splitLine: { show: false },
+            axisLine: {
+              lineStyle: {
+                color: "#B4B4B4"
+              }
+            },
+            axisLabel: {
+              formatter: "{value} "
+            }
+          }
+        ],
+        series: [
+          {
+            name: "贯通率",
+            type: "line",
+            smooth: true,
+            showAllSymbol: true,
+            symbol: "emptyCircle",
+            symbolSize: 8,
+            yAxisIndex: 1,
+            itemStyle: {
+              normal: {
+                color: "#F02FC2"
+              }
+            },
+            data: this.cdata.lineData
+          },
+          {
+            name: "已贯通",
+            type: "bar",
+            barWidth: 10,
+            itemStyle: {
+              normal: {
+                barBorderRadius: 5,
+                color: new this.$echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                  { offset: 0, color: "#956FD4" },
+                  { offset: 1, color: "#3EACE5" }
+                ])
+              }
+            },
+            data: this.cdata.barData
+          },
+          // {
+          //   name: "计划贯通",
+          //   type: "bar",
+          //   barGap: "-100%",
+          //   barWidth: 10,
+          //   itemStyle: {
+          //     normal: {
+          //       barBorderRadius: 5,
+          //       color: new this.$echarts.graphic.LinearGradient(0, 0, 0, 1, [
+          //         { offset: 0, color: "rgba(156,107,211,0.8)" },
+          //         { offset: 0.2, color: "rgba(156,107,211,0.5)" },
+          //         { offset: 1, color: "rgba(156,107,211,0.2)" }
+          //       ])
+          //     }
+          //   },
+          //   z: -12,
+          //   data: this.cdata.lineData
+          // }
+        ]
       }
+      this.myChart.setOption(option);
     },
   }
 };
 </script>
 
-<style lang="scss" scoped>
-</style>
+<style lang="scss" scoped></style>
