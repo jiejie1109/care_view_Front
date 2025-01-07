@@ -1,15 +1,20 @@
 <template>
   <div>
     <!-- <Chart :cdata="cdata" /> -->
-    <div ref="chart" style="width: 100%;height: 480px;"></div>
+    <div ref="chart" style="width: 100%;height: 480px;" v-bind:key="cdata.lineData" @mouseenter="startAction"
+      @mouseleave="cancelAction"></div>
   </div>
 </template>
 
 <script>
+
+// import { data } from 'vue-awesome';
+
 // import Chart from './chart.vue'
 export default {
   data() {
     return {
+      isHovered: true,
       cdata: {
         category: [
           "市区",
@@ -123,11 +128,30 @@ export default {
   components: {
     // Chart,
   },
-  mounted() {
+  async mounted() {
+    const res = await this.$http.get('myApp/bottomLeft')
+    // console.log(res)
+    // 品牌
+    this.$set(this.cdata, 'category', res.data.brandList)
+    // 价格
+    this.$set(this.cdata, 'lineData', res.data.priceList)
+    // 销量
+    this.$set(this.cdata, 'barData', res.data.volumeList)
     // this.setData();
-    this.initChart()
+    // this.initChart()
+  },
+  updated() {
+    // this.setData();
+    this.initChart();
+    this.strDataUpdateInterval();
   },
   methods: {
+    startAction() {
+      this.isHovered = false
+    },
+    cancelAction() {
+      this.isHovered = true
+    },
     initChart() {
       this.myChart = this.$echarts.init(this.$refs.chart);
       const option = {
@@ -142,8 +166,16 @@ export default {
             }
           }
         },
+        dataZoom: [
+          {
+            type: 'slider',
+            start: 0,
+            end: 95,
+            show: false
+          }
+        ],
         legend: {
-          data: ["已贯通", "计划贯通", "贯通率"],
+          data: ["已贯通", "贯通率"],
           textStyle: {
             color: "#B4B4B4"
           },
@@ -160,6 +192,10 @@ export default {
             lineStyle: {
               color: "#B4B4B4"
             }
+          },
+          axisLabel: {
+            show: true,
+            interval: 0
           },
           axisTick: {
             show: false
@@ -221,28 +257,46 @@ export default {
             },
             data: this.cdata.barData
           },
-          // {
-          //   name: "计划贯通",
-          //   type: "bar",
-          //   barGap: "-100%",
-          //   barWidth: 10,
-          //   itemStyle: {
-          //     normal: {
-          //       barBorderRadius: 5,
-          //       color: new this.$echarts.graphic.LinearGradient(0, 0, 0, 1, [
-          //         { offset: 0, color: "rgba(156,107,211,0.8)" },
-          //         { offset: 0.2, color: "rgba(156,107,211,0.5)" },
-          //         { offset: 1, color: "rgba(156,107,211,0.2)" }
-          //       ])
-          //     }
-          //   },
-          //   z: -12,
-          //   data: this.cdata.lineData
-          // }
         ]
       }
       this.myChart.setOption(option);
     },
+    changeData(x) {
+      var st = x[0]
+      for (var i = 0; i < x.length - 1; i++) {
+        x[i] = x[i + 1]
+      }
+      x[x.length - 1] = st
+    },
+    updareBarChart() {
+      if (this.isHovered == true) {
+        this.changeData(this.cdata.category)
+        this.changeData(this.cdata.lineData)
+        this.changeData(this.cdata.barData)
+        this.myChart.setOption({
+          xAxis: {
+            data: this.cdata.category
+          },
+          series: [
+            {
+              data: this.cdata.lineData
+            },
+            {
+              data: this.cdata.barData
+            },
+          ]
+        })
+      } else {
+        clearInterval(this.timer)
+      }
+    },
+    strDataUpdateInterval() {
+      if (this.isHovered == true) {
+        const interval = 3000
+        clearInterval(this.timer)
+        setInterval(this.updareBarChart, interval)
+      }
+    }
   }
 };
 </script>
