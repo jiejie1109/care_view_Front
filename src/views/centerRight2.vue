@@ -5,7 +5,7 @@
         <span>
           <icon name="align-left" class="text-icon"></icon>
         </span>
-        <span>汽车销售价格分布</span>
+        <span style="font-size: 17px;">汽车销售价格分布</span>
       </div>
       <div class="d-flex ai-center flex-column body-box">
         <dv-capsule-chart class="dv-cap-chart" :config="config" v-bind:key="config.data[1].value"

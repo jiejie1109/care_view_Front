@@ -175,7 +175,7 @@ export default {
           }
         ],
         legend: {
-          data: ["已贯通", "贯通率"],
+          data: ["车辆价格", "销售情况"],
           textStyle: {
             color: "#B4B4B4"
           },
@@ -228,7 +228,7 @@ export default {
         ],
         series: [
           {
-            name: "贯通率",
+            name: "车辆价格",
             type: "line",
             smooth: true,
             showAllSymbol: true,
@@ -237,21 +237,25 @@ export default {
             yAxisIndex: 1,
             itemStyle: {
               normal: {
-                color: "#F02FC2"
+                barBorderRadius: 5,
+                color: new this.$echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                  { offset: 0, color: "#082e53" },
+                  { offset: 1, color: "white" }
+                ])
               }
             },
             data: this.cdata.lineData
           },
           {
-            name: "已贯通",
+            name: "销售情况",
             type: "bar",
             barWidth: 10,
             itemStyle: {
               normal: {
                 barBorderRadius: 5,
                 color: new this.$echarts.graphic.LinearGradient(0, 0, 0, 1, [
-                  { offset: 0, color: "#956FD4" },
-                  { offset: 1, color: "#3EACE5" }
+                  { offset: 0, color: "#082e53" },
+                  { offset: 1, color: "white" }
                 ])
               }
             },

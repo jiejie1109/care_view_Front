@@ -6,7 +6,7 @@
           <icon name="chart-bar" class="text-icon"></icon>
         </span>
         <div class="d-flex">
-          <span class="fs-xl text mx-2">品牌销量玫瑰图</span>
+          <span style="font-size: 17px;">品牌销量玫瑰图</span>
           <dv-decoration-3 class="dv-dec-3" />
         </div>
       </div>
